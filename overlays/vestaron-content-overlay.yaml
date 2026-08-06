@@ -1,0 +1,64 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Vestaron Content API
+  version: 1.0.0
+x-generated: '2026-08-05'
+x-method: generated
+x-source: openapi/vestaron-content-openapi.yml
+extends: openapi/vestaron-content-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/provider/vestaron
+    x-apievangelist-artifacts:
+      authentication: authentication/vestaron-authentication.yml
+      conventions: conventions/vestaron-conventions.yml
+      errors: errors/vestaron-problem-types.yml
+      examples: examples/vestaron-examples.yml
+      data_model: data-model/vestaron-data-model.yml
+      lifecycle: lifecycle/vestaron-lifecycle.yml
+      conformance: conformance/vestaron-conformance.yml
+      well_known: well-known/vestaron-well-known.yml
+      mcp: mcp/vestaron-mcp.yml
+    x-provenance:
+      derived_by: API Evangelist enrichment pipeline
+      derived_from: https://vestaron.com/wp-json/
+      derived_on: '2026-08-05'
+      provider_published: false
+      note: >-
+        Vestaron publishes no OpenAPI. This overlay records API Evangelist's enhancements over a
+        definition that API Evangelist itself derived from the site's live WordPress route index.
+- target: $.info
+  update:
+    x-rate-limits:
+      signaled: false
+      note: no RateLimit-*, X-RateLimit-* or Retry-After headers observed on any response
+    x-idempotency:
+      supported: false
+      note: no idempotency key header or parameter exists on any operation
+- target: $.paths['/wp/v2/posts'].get
+  update:
+    x-content-domain: newsroom
+    x-categories:
+      News: 64
+      Articles: 16
+      Recognitions: 13
+      Video/Podcasts: 5
+    x-date-range: 2015-06-12 to 2026-03-11
+- target: $.paths['/wp/v2/pages'].get
+  update:
+    x-content-domain: products-and-company
+    x-note: >-
+      Product pages for SPEAR LEP, SPEAR RC, SPEAR T, BASIN FLEX, LEPROTEC and LEPROTEC WG, plus
+      About Us, Science, Sustainability, Bee Friendly, Resources, Downloads, Contact and the
+      per-jurisdiction legal pages.
+- target: $.paths['/wp/v2/users'].get
+  update:
+    x-access: gated
+    x-observed-status: 401
+    x-observed-error: rest_user_cannot_view
+- target: $.paths['/wp/v2/settings'].get
+  update:
+    x-access: gated
+    x-observed-status: 401
+    x-observed-error: rest_forbidden

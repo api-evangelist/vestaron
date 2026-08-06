@@ -1,0 +1,97 @@
+generated: '2026-08-05'
+method: probed
+source: https://vestaron.com/.well-known/
+host: https://vestaron.com
+note: >-
+  vestaron.com runs WordPress with a catch-all front controller: every unmatched path returns
+  HTTP 200 with the site's HTML shell, so a bare status code is not evidence of presence. Each
+  probe below was diffed against a control path
+  (https://vestaron.com/zzz-nonexistent-path-9182, 200, 122,173 bytes of HTML). Documents marked
+  present: false returned that exact HTML shell and are recorded as ABSENT, not as 200s.
+control:
+  url: https://vestaron.com/zzz-nonexistent-path-9182
+  status: 200
+  bytes: 122173
+  content_type: text/html
+documents:
+- path: /.well-known/oauth-authorization-server
+  standard: RFC 8414 OAuth 2.0 Authorization Server Metadata
+  status: 200
+  final_url: https://vestaron.com/.well-known/oauth-authorization-server/
+  content_type: application/json
+  present: true
+  file: vestaron-oauth-authorization-server.json
+  summary: >-
+    Issuer https://vestaron.com; authorization_code + refresh_token grants; PKCE S256 required;
+    single scope "mcp"; public clients (token_endpoint_auth_methods_supported: none); client-ID
+    metadata documents supported. Emitted by the WordPress MCP/OAuth adapter on the site.
+- path: /.well-known/oauth-protected-resource
+  standard: RFC 9728 OAuth 2.0 Protected Resource Metadata
+  status: 200
+  final_url: https://vestaron.com/.well-known/oauth-protected-resource/
+  content_type: application/json
+  present: true
+  file: vestaron-oauth-protected-resource.json
+  summary: >-
+    Declares https://vestaron.com/wp-json/mcp/mcp-oauth-server as the protected resource, with
+    https://vestaron.com as its authorization server, bearer token in the Authorization header,
+    scope "mcp".
+- path: /.well-known/security.txt
+  standard: RFC 9116
+  status: 200
+  present: false
+  reason: html-shell-matches-control
+- path: /.well-known/openid-configuration
+  standard: OpenID Connect Discovery 1.0
+  status: 200
+  present: false
+  reason: html-shell-matches-control
+- path: /.well-known/api-catalog
+  standard: RFC 9727
+  status: 200
+  present: false
+  reason: html-shell-matches-control
+- path: /.well-known/ai-plugin.json
+  status: 200
+  present: false
+  reason: html-shell-matches-control
+- path: /.well-known/agent-card.json
+  standard: A2A 1.0.0
+  status: 200
+  present: false
+  reason: html-shell-matches-control
+- path: /.well-known/agent.json
+  standard: A2A pre-0.3 legacy
+  status: 200
+  present: false
+  reason: html-shell-matches-control
+other_discovery:
+- path: /wp-json/
+  standard: WordPress REST route discovery
+  status: 200
+  content_type: application/json
+  present: true
+  summary: >-
+    194 registered routes across 13 namespaces (oembed/1.0, elfsight-popup, wppp/v1,
+    wicked-folders/v1, wordfence/v1, complianz/v1, complianz_tc/v1, ai1wm/v1, mcp, wp/v2,
+    wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1). The wp/v2 subset was derived into
+    openapi/vestaron-content-openapi.yml.
+- path: /robots.txt
+  status: 200
+  content_type: text/plain
+  present: true
+  summary: 'User-agent: * / Disallow: /wp-admin/ / Allow: /wp-admin/admin-ajax.php; sitemap at
+    https://vestaron.com/wp-sitemap.xml. No AI/agent-specific user-agent rules.'
+- path: /sitemap.xml
+  status: 200
+  content_type: application/xml
+  present: true
+- path: /feed/
+  standard: RSS 2.0
+  status: 200
+  content_type: application/rss+xml
+  present: true
+- path: /llms.txt
+  status: 200
+  present: false
+  reason: html-shell-matches-control

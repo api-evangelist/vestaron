@@ -1,0 +1,116 @@
+generated: '2026-08-05'
+method: probed
+source: live anonymous responses from https://vestaron.com/wp-json/wp/v2
+note: >-
+  Real request/response pairs captured against the live host on 2026-08-05. Every payload below
+  is verbatim (truncated where noted). Nothing is synthetic — Vestaron publishes no code samples,
+  so these were produced by calling the surface anonymously.
+examples:
+- name: List the most recent newsroom post
+  operation: getPosts
+  request:
+    method: GET
+    url: https://vestaron.com/wp-json/wp/v2/posts?per_page=1&_fields=id,date,slug,link,title,excerpt,categories,tags,featured_media,author
+  response:
+    status: 200
+    headers:
+      X-WP-Total: '94'
+      X-WP-TotalPages: '94'
+    body:
+    - id: 13390
+      date: '2026-03-11T11:18:17'
+      slug: vestaron-joins-industry-innovators-calling-for-modern-science-based-definition-of-biocontrol
+      link: https://vestaron.com/vestaron-joins-industry-innovators-calling-for-modern-science-based-definition-of-biocontrol/
+      title:
+        rendered: Vestaron Joins Industry Innovators Calling for Modern, Science-Based Definition
+          of Biocontrol
+      author: 1
+      featured_media: 12581
+      categories: [35]
+      tags: []
+- name: Search the site for a product name
+  operation: getSearch
+  request:
+    method: GET
+    url: https://vestaron.com/wp-json/wp/v2/search?search=BASIN&per_page=3
+  response:
+    status: 200
+    headers:
+      X-WP-Total: '9'
+    body_first_item:
+      id: 13380
+      title: "Vestaron Secures EPA Approval for BASIN™ Bioinsecticide on Outdoor Crops"
+      url: https://vestaron.com/vestaron-secures-epa-approval-for-basin-bioinsecticide-on-outdoor-crops/
+      type: post
+      subtype: post
+    note: >-
+      The search projection returns id/title/url/type/subtype plus _links.self pointing at the
+      full object, so a two-step search-then-fetch is the intended traversal.
+- name: List the editorial categories
+  operation: getCategories
+  request:
+    method: GET
+    url: https://vestaron.com/wp-json/wp/v2/categories?per_page=20&_fields=name,slug,count,link
+  response:
+    status: 200
+    body:
+    - {name: Articles, slug: articles, count: 16, link: 'https://vestaron.com/category/articles/'}
+    - {name: News, slug: news, count: 64, link: 'https://vestaron.com/category/news/'}
+    - {name: Recognitions, slug: recognitions, count: 13, link: 'https://vestaron.com/category/recognitions/'}
+    - {name: Video/Podcasts, slug: multimedia, count: 5, link: 'https://vestaron.com/category/multimedia/'}
+- name: Page through the newsroom
+  operation: getPosts
+  request:
+    method: GET
+    url: https://vestaron.com/wp-json/wp/v2/posts?per_page=2&page=2
+  response:
+    status: 200
+    headers:
+      X-WP-Total: '94'
+      X-WP-TotalPages: '47'
+      Link: <https://vestaron.com/wp-json/wp/v2/posts?per_page=2&page=1>; rel="prev", <https://vestaron.com/wp-json/wp/v2/posts?per_page=2&page=3>;
+        rel="next"
+      Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages, Link
+- name: Invalid pagination parameter
+  operation: getPosts
+  request:
+    method: GET
+    url: https://vestaron.com/wp-json/wp/v2/posts?per_page=500
+  response:
+    status: 400
+    body:
+      code: rest_invalid_param
+      message: 'Invalid parameter(s): per_page'
+      data:
+        status: 400
+        params:
+          per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+- name: Gated collection
+  operation: getUsers
+  request:
+    method: GET
+    url: https://vestaron.com/wp-json/wp/v2/users
+  response:
+    status: 401
+    body:
+      code: rest_user_cannot_view
+      message: Sorry, you are not allowed to list users.
+      data:
+        status: 401
+- name: MCP tools/list without a token
+  operation: null
+  surface: mcp
+  request:
+    method: POST
+    url: https://vestaron.com/wp-json/mcp/mcp-oauth-server
+    headers:
+      Content-Type: application/json
+      Accept: application/json, text/event-stream
+    body: {jsonrpc: '2.0', id: 1, method: tools/list}
+  response:
+    status: 401
+    body:
+      code: mcp_unauthorized
+      message: MCP authentication required.
+      data:
+        status: 401

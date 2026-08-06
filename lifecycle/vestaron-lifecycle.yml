@@ -1,0 +1,57 @@
+generated: '2026-08-05'
+method: probed
+source: openapi/vestaron-content-openapi.yml + https://vestaron.com/wp-json/
+note: >-
+  Vestaron publishes no API versioning policy, deprecation policy, SLA or status page. This file
+  records the lifecycle facts that are actually observable on the live surface, and records the
+  absences explicitly so a reader is not left guessing.
+versioning:
+  scheme: uri-path-namespace
+  current: wp/v2
+  policy_url: null
+  policy_published: false
+  detail: >-
+    The WordPress REST namespace is the version. Namespace changes are driven by WordPress core
+    and the installed plugins, not by a Vestaron release train.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  detail: >-
+    No Sunset or Deprecation response header (RFC 8594) was returned on any observed request,
+    and no deprecation policy is published.
+deprecated_operations: []
+sla:
+  url: null
+  uptime_target: null
+  published: false
+status_page:
+  url: null
+  published: false
+  detail: >-
+    Probed status.vestaron.com (NXDOMAIN). No status page is linked from vestaron.com and no
+    third-party status host (statuspage.io, status.io, instatus) was found for the domain.
+support:
+  url: https://vestaron.com/contact/
+  channels: [web form, distributor and territory-manager contacts]
+change_communication:
+  api_changelog: null
+  detail: >-
+    Vestaron publishes no API changelog. The nearest dated public record is the corporate
+    newsroom at https://vestaron.com/news/ — 94 posts spanning 2015-06-12 to 2026-03-11, covering
+    EPA registrations, product launches, funding and awards, not API changes. No ChangeLog
+    artifact is emitted, because a product-news feed is not an API changelog.
+  newsroom: https://vestaron.com/news/
+  newsroom_feed: https://vestaron.com/feed/
+x-evidence:
+  fetched: '2026-08-05'
+  urls:
+  - url: https://vestaron.com/wp-json/wp/v2/posts?per_page=2&page=2
+    http_status: 200
+    note: no Sunset, Deprecation, RateLimit or Retry-After headers present
+  - url: https://vestaron.com/feed/
+    http_status: 200
+  - url: https://status.vestaron.com
+    http_status: null
+    note: NXDOMAIN

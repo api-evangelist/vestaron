@@ -1,0 +1,73 @@
+generated: '2026-08-05'
+method: probed
+source: openapi/vestaron-content-openapi.yml + well-known/vestaron-well-known.yml + live probes
+note: >-
+  Cross-cutting standards conformance, asserted only where a live probe or the derived spec shows
+  it. Vestaron publishes no compliance program, certifications or trust center, so no Compliance
+  pointer is emitted for this provider.
+standards:
+- id: oauth2
+  conforms: true
+  evidence: >-
+    RFC 6749 authorization-code grant advertised at
+    https://vestaron.com/.well-known/oauth-authorization-server (200), with refresh_token grant.
+- id: oauth2-pkce
+  conforms: true
+  evidence: 'code_challenge_methods_supported: [S256] in the authorization-server metadata.'
+- id: rfc8414-authorization-server-metadata
+  conforms: true
+  evidence: https://vestaron.com/.well-known/oauth-authorization-server returns 200 application/json.
+- id: rfc9728-protected-resource-metadata
+  conforms: true
+  evidence: >-
+    https://vestaron.com/.well-known/oauth-protected-resource returns 200 naming
+    https://vestaron.com/wp-json/mcp/mcp-oauth-server as the protected resource.
+- id: mcp
+  conforms: true
+  evidence: >-
+    Model Context Protocol endpoint registered in the WordPress route index under the mcp
+    namespace; JSON-RPC 2.0 over HTTP. tools/list responds 401 mcp_unauthorized (a protocol-level
+    auth response, not a 404).
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns the site HTML shell, not a discovery document.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors use the WordPress code/message/data.status envelope with content-type
+    application/json, not application/problem+json.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns the site HTML shell (byte-identical to the control 404).
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns the site HTML shell.
+- id: a2a
+  conforms: false
+  evidence: >-
+    Both /.well-known/agent-card.json and /.well-known/agent.json return the site HTML shell,
+    byte-identical to the control 404. No agent card is published.
+- id: rfc8288-web-linking
+  conforms: true
+  evidence: 'Collection responses return Link: rel="prev"/rel="next" pagination links.'
+- id: openapi
+  conforms: false
+  evidence: >-
+    Vestaron publishes no OpenAPI. openapi/vestaron-content-openapi.yml was derived by API
+    Evangelist from the site's own route-discovery document.
+- id: asyncapi
+  conforms: false
+  evidence: no event, streaming or webhook surface exists on the host
+- id: graphql
+  conforms: false
+  evidence: no /graphql route in any of the 13 registered WordPress REST namespaces
+compliance_program:
+  published: false
+  certifications: []
+  detail: >-
+    Probed trust.vestaron.com (NXDOMAIN) and vestaron.com/security, /trust, /compliance — the
+    WordPress catch-all answers those with the site HTML shell and none carries any trust or
+    compliance keyword. No SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP or CSA STAR claim appears
+    anywhere on vestaron.com, and no security.txt or disclosure policy exists. The
+    company's published compliance posture is regulatory (EPA / OMRI / equivalent crop-protection
+    registrations), not information-security certification.

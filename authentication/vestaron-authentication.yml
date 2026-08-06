@@ -1,0 +1,67 @@
+generated: '2026-08-05'
+method: probed
+source: openapi/vestaron-content-openapi.yml + https://vestaron.com/.well-known/oauth-authorization-server
+summary:
+  types:
+  - none
+  - http
+  - oauth2
+  api_key_in: []
+  oauth2_flows:
+  - authorizationCode
+  note: >-
+    Vestaron publishes no developer authentication documentation. The profile below is what the
+    two live machine-readable surfaces on vestaron.com actually declare: anonymous read on the
+    WordPress content API, HTTP Basic (Application Passwords) for writes, and OAuth 2.1 + PKCE
+    for the MCP endpoint.
+schemes:
+- name: anonymous
+  type: none
+  applies_to: https://vestaron.com/wp-json/wp/v2
+  description: >-
+    Read operations on the wp/v2 content collections require no credentials. Probed 2026-08-05:
+    /wp/v2/posts, /wp/v2/pages, /wp/v2/media, /wp/v2/categories, /wp/v2/tags, /wp/v2/comments,
+    /wp/v2/search and /wp/v2/types all returned 200 anonymously.
+  sources:
+  - openapi/vestaron-content-openapi.yml
+- name: applicationPassword
+  type: http
+  scheme: basic
+  applies_to: https://vestaron.com/wp-json/wp/v2
+  description: >-
+    WordPress Application Passwords over HTTP Basic. The application-password routes are
+    registered on vestaron.com (/wp/v2/users/{user_id}/application-passwords), but the site's
+    route-discovery document reports an empty "authentication" object, so no authentication
+    scheme is advertised for discovery. /wp/v2/users and /wp/v2/settings return 401 to anonymous
+    callers, as do all write operations.
+  sources:
+  - openapi/vestaron-content-openapi.yml
+- name: mcp-oauth
+  type: oauth2
+  applies_to: https://vestaron.com/wp-json/mcp/mcp-oauth-server
+  description: >-
+    OAuth 2.1 authorization-code with mandatory PKCE (S256), public clients
+    (token_endpoint_auth_methods_supported: none), refresh tokens, client-ID metadata documents,
+    bearer token in the Authorization header. Single scope "mcp". Advertised anonymously via
+    RFC 8414 authorization-server metadata and RFC 9728 protected-resource metadata.
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://vestaron.com/oauth/authorize
+    tokenUrl: https://vestaron.com/oauth/token
+    revocationUrl: https://vestaron.com/oauth/revoke
+    scopes: 1
+  sources:
+  - well-known/vestaron-oauth-authorization-server.json
+  - well-known/vestaron-oauth-protected-resource.json
+scopes_artifact: scopes/vestaron-scopes.yml
+x-evidence:
+  fetched: '2026-08-05'
+  urls:
+  - url: https://vestaron.com/wp-json/wp/v2/posts?per_page=1
+    http_status: 200
+  - url: https://vestaron.com/wp-json/wp/v2/users?per_page=1
+    http_status: 401
+  - url: https://vestaron.com/wp-json/wp/v2/settings
+    http_status: 401
+  - url: https://vestaron.com/.well-known/oauth-authorization-server
+    http_status: 200

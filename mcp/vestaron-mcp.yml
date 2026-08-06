@@ -1,0 +1,81 @@
+generated: '2026-08-05'
+method: probed
+status: published
+source: https://vestaron.com/.well-known/oauth-protected-resource
+server:
+  name: vestaron
+  implementation: WordPress MCP Adapter
+  transport: http
+  url: https://vestaron.com/wp-json/mcp/mcp-oauth-server
+  protocol: JSON-RPC 2.0 over HTTP (Streamable HTTP)
+discovery:
+  route_index: https://vestaron.com/wp-json/
+  namespace: mcp
+  routes:
+  - path: /wp-json/mcp
+    methods: [GET]
+  - path: /wp-json/mcp/mcp-oauth-server
+    methods: [POST, GET, DELETE]
+    note: OAuth-protected server; the resource named in the RFC 9728 metadata document.
+  - path: /wp-json/mcp/mcp-adapter-default-server
+    methods: [POST, GET, DELETE]
+    note: Default adapter server; requires a WordPress-authenticated session.
+  companion_registry:
+    path: /wp-json/wp-abilities/v1/abilities
+    status: 401
+    note: >-
+      The WordPress Abilities API registry that backs the MCP tool set. Anonymous GET returns
+      401 rest_forbidden, so the registered abilities could not be enumerated.
+authorization:
+  model: OAuth 2.1 authorization code with PKCE
+  authorization_server: https://vestaron.com
+  authorization_endpoint: https://vestaron.com/oauth/authorize
+  token_endpoint: https://vestaron.com/oauth/token
+  revocation_endpoint: https://vestaron.com/oauth/revoke
+  code_challenge_methods: [S256]
+  grant_types: [authorization_code, refresh_token]
+  token_endpoint_auth_methods: [none]
+  client_id_metadata_document_supported: true
+  bearer_methods: [header]
+  scopes: [mcp]
+  metadata:
+  - well-known/vestaron-oauth-authorization-server.json
+  - well-known/vestaron-oauth-protected-resource.json
+tools: []
+tools_note: >-
+  NOT ENUMERATED. An anonymous JSON-RPC tools/list against
+  https://vestaron.com/wp-json/mcp/mcp-oauth-server returns HTTP 401
+  {"code":"mcp_unauthorized","message":"MCP authentication required."}; the same call against
+  /wp-json/mcp/mcp-adapter-default-server returns HTTP 401 rest_forbidden, as does the
+  wp-abilities/v1 registry. The live tool schemas therefore require an authorized OAuth session
+  with the mcp scope. No tool list is asserted here, and none was derived — Vestaron publishes
+  no llms.txt or MCP documentation to fall back on.
+scope_note: >-
+  This server fronts the vestaron.com WordPress content estate (marketing site, newsroom, media
+  library) — it is CMS infrastructure shipped by the WordPress MCP/OAuth adapter, not a Vestaron
+  crop-protection product API. Recorded because it is genuinely live, anonymously discoverable
+  through RFC 8414 / RFC 9728 metadata, and served from the company's own host.
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://vestaron.com/.well-known/oauth-protected-resource
+    method: GET
+    http_status: 200
+    content_type: application/json
+  - url: https://vestaron.com/.well-known/oauth-authorization-server
+    method: GET
+    http_status: 200
+    content_type: application/json
+  - url: https://vestaron.com/wp-json/mcp/mcp-oauth-server
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    response: '{"code":"mcp_unauthorized","message":"MCP authentication required.","data":{"status":401}}'
+  - url: https://vestaron.com/wp-json/mcp/mcp-adapter-default-server
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    response: '{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}}'
+  - url: https://vestaron.com/wp-json/wp-abilities/v1/abilities
+    method: GET
+    http_status: 401

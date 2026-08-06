@@ -1,0 +1,88 @@
+generated: '2026-08-05'
+method: probed
+source: live error responses observed against https://vestaron.com/wp-json/wp/v2 on 2026-08-05
+format: wordpress-rest
+rfc9457: false
+note: >-
+  Vestaron publishes no error reference. Every entry below was captured by making a real,
+  anonymous, read-only request that provokes the error and recording the response verbatim. The
+  envelope is the WordPress REST error shape (code / message / data.status), not RFC 9457
+  application/problem+json.
+envelope:
+  content_type: application/json
+  fields:
+    code: machine-readable error slug
+    message: human-readable message
+    data.status: HTTP status repeated in the body
+    data.params: map of parameter name to validation message (rest_invalid_param only)
+    data.details: per-parameter nested error objects (rest_invalid_param only)
+problems:
+- status: 404
+  code: rest_post_invalid_id
+  title: Invalid post ID.
+  remediation: >-
+    The id path parameter does not resolve to a published object of that post type. Enumerate
+    ids from the collection endpoint first.
+  observed_at: https://vestaron.com/wp-json/wp/v2/posts/999999
+  source_operations:
+  - openapi/vestaron-content-openapi.yml#getPostsById
+  - openapi/vestaron-content-openapi.yml#getPagesById
+  - openapi/vestaron-content-openapi.yml#getMediaById
+- status: 404
+  code: rest_term_invalid
+  title: Term does not exist.
+  remediation: The taxonomy term id does not exist. List /wp/v2/categories or /wp/v2/tags first.
+  observed_at: https://vestaron.com/wp-json/wp/v2/categories/999999
+  source_operations:
+  - openapi/vestaron-content-openapi.yml#getCategoriesById
+  - openapi/vestaron-content-openapi.yml#getTagsById
+- status: 404
+  code: rest_no_route
+  title: No route was found matching the URL and request method.
+  remediation: >-
+    The path is not registered on this host, or the method is not allowed on it. Read
+    https://vestaron.com/wp-json/ for the live route index.
+  observed_at: https://vestaron.com/wp-json/wp/v2/nonexistent-route
+- status: 400
+  code: rest_invalid_param
+  title: 'Invalid parameter(s)'
+  remediation: >-
+    A query parameter failed validation. data.params names each offending parameter and
+    data.details carries the nested reason (e.g. rest_out_of_bounds for per_page above 100).
+  observed_at: https://vestaron.com/wp-json/wp/v2/posts?per_page=500
+  observed_body: >-
+    {"code":"rest_invalid_param","message":"Invalid parameter(s): per_page","data":{"status":400,
+    "params":{"per_page":"per_page must be between 1 (inclusive) and 100 (inclusive)"}}}
+- status: 401
+  code: rest_user_cannot_view
+  title: Sorry, you are not allowed to list users.
+  remediation: >-
+    The users collection is not anonymously readable on this host. Authenticate as a user with
+    the list_users capability.
+  observed_at: https://vestaron.com/wp-json/wp/v2/users
+  source_operations:
+  - openapi/vestaron-content-openapi.yml#getUsers
+- status: 401
+  code: rest_forbidden_context
+  title: Sorry, you are not allowed to edit posts in this post type.
+  remediation: >-
+    context=edit requires an authenticated editor. Anonymous callers must use context=view
+    (the default) or context=embed.
+  observed_at: https://vestaron.com/wp-json/wp/v2/posts?context=edit
+- status: 401
+  code: rest_forbidden
+  title: Sorry, you are not allowed to do that.
+  remediation: >-
+    The route requires an authenticated WordPress session. Observed on /wp/v2/settings, on
+    /wp-json/mcp/mcp-adapter-default-server and on /wp-json/wp-abilities/v1/abilities.
+  observed_at: https://vestaron.com/wp-json/wp/v2/settings
+  source_operations:
+  - openapi/vestaron-content-openapi.yml#getSettings
+- status: 401
+  code: mcp_unauthorized
+  title: MCP authentication required.
+  remediation: >-
+    Complete the OAuth 2.1 authorization-code + PKCE flow at
+    https://vestaron.com/oauth/authorize and present the bearer token with scope "mcp".
+  observed_at: https://vestaron.com/wp-json/mcp/mcp-oauth-server
+  surface: mcp

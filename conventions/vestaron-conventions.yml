@@ -1,0 +1,106 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/vestaron-content-openapi.yml + live response headers observed 2026-08-05
+note: >-
+  Vestaron publishes no API documentation, so nothing here is a documented provider convention.
+  Every entry below was derived from the site's own route-discovery document and from response
+  headers observed on live anonymous calls to https://vestaron.com/wp-json/wp/v2. The semantics
+  are those of the WordPress REST API as deployed on this host.
+authentication:
+  style: none-for-read, http-basic-for-write, oauth2-for-mcp
+  detail: see authentication/vestaron-authentication.yml
+  cors:
+    access_control_allow_headers: [Authorization, X-WP-Nonce, Content-Disposition, Content-MD5,
+      Content-Type]
+    access_control_expose_headers: [X-WP-Total, X-WP-TotalPages, Link]
+    vary: Origin
+idempotency:
+  supported: false
+  detail: >-
+    No idempotency key header, parameter or scope exists anywhere in the 89 derived operations,
+    and none is documented. Repeated POSTs to the collection routes create duplicate resources.
+    Recorded as ABSENT — no Idempotency pointer is emitted for this provider.
+pagination:
+  style: page-number
+  parameters:
+  - name: page
+    in: query
+    default: 1
+    minimum: 1
+  - name: per_page
+    in: query
+    default: 10
+    minimum: 1
+    maximum: 100
+  - name: offset
+    in: query
+    note: alternative to page, on the post-type collections
+  response_headers:
+  - name: X-WP-Total
+    detail: total matching items (observed 94 on /wp/v2/posts)
+  - name: X-WP-TotalPages
+    detail: total pages at the requested per_page (observed 47 at per_page=2)
+  - name: Link
+    detail: RFC 8288 rel="prev" / rel="next" pagination links
+  ordering:
+    parameters: [order, orderby]
+    order_values: [asc, desc]
+field_selection:
+  sparse_fields:
+    parameter: _fields
+    detail: comma-separated list limiting the properties returned per object
+  embedding:
+    parameter: _embed
+    detail: inlines linked resources (author, featured media, terms) into _embedded
+  envelope:
+    parameter: _envelope
+    detail: wraps body, status and headers into a single JSON envelope
+  links:
+    detail: every object carries a HAL-style _links object with self, collection and about
+metadata:
+  supported: partial
+  detail: >-
+    Post objects expose a `meta` object for registered custom fields; no registered public meta
+    keys were observed on vestaron.com.
+request_tracing:
+  request_id_header: null
+  detail: >-
+    No request-id or correlation header is returned. Responses carry only server/platform
+    headers (server: LiteSpeed, platform: hostinger, x-powered-by: PHP/8.1.34).
+versioning:
+  style: uri-path-namespace
+  current: wp/v2
+  detail: >-
+    The namespace is the version. Registered namespaces on this host: oembed/1.0,
+    elfsight-popup, wppp/v1, wicked-folders/v1, wordfence/v1, complianz/v1, complianz_tc/v1,
+    ai1wm/v1, mcp, wp/v2, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1.
+  policy_published: false
+error_envelope:
+  format: wordpress-rest
+  rfc9457: false
+  content_type: application/json
+  shape:
+    code: machine-readable slug (rest_forbidden, rest_invalid_param, rest_no_route, ...)
+    message: human-readable string
+    data.status: HTTP status repeated in the body
+    data.params: per-parameter validation messages on rest_invalid_param
+  catalog: errors/vestaron-problem-types.yml
+rate_limiting:
+  signaled: false
+  detail: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After headers were returned on any observed response.
+    The host is shared LiteSpeed/Hostinger; any throttling is not advertised in-band.
+caching:
+  headers_observed:
+    cache-control: public, max-age=0
+    x-robots-tag: noindex
+  conditional_requests: not advertised
+cross_links:
+  errors: errors/vestaron-problem-types.yml
+  lifecycle: lifecycle/vestaron-lifecycle.yml
+  authentication: authentication/vestaron-authentication.yml
+  data_model: data-model/vestaron-data-model.yml
+x-evidence:
+  fetched: '2026-08-05'
+  url: https://vestaron.com/wp-json/wp/v2/posts?per_page=2&page=2
+  http_status: 200

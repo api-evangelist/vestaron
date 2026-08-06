@@ -1,18 +1,122 @@
 aid: vestaron
 name: Vestaron
-description: 'Vestaron is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Vestaron is an agricultural biotechnology company founded in 2005 and headquartered in
+  Kalamazoo, Michigan, that develops peptide-based bioinsecticides derived from the venom of
+  spiders and other venomous species. Its peptides deliver insecticidal modes of action that had
+  never before been used for insect control — SPEAR, the first commercialised active ingredient,
+  introduced IRAC Group 32, the first new neuromuscular mode of action since the diamides — and
+  are effective on lepidopteran and sucking pests while remaining gentle on pollinators and
+  beneficial insects. The commercial portfolio is SPEAR LEP, SPEAR RC, SPEAR T, BASIN FLEX,
+  LEPROTEC and LEPROTEC WG, manufactured in partnership with ADM. The company has won the Crop
+  Science Award and an EPA Green Chemistry Challenge award, and in 2024 became the first
+  agriculture and food company inducted into the Global CleanTech 100 Hall of Fame. Vestaron
+  publishes no developer program, no product API and no API documentation. The only
+  machine-readable surfaces on vestaron.com are the WordPress REST content API (wp/v2), which is
+  anonymously readable and serves the corporate newsroom, product and company pages and media
+  library, and an OAuth-gated Model Context Protocol endpoint advertised through RFC 8414 and
+  RFC 9728 metadata.
+image: https://vestaron.com/wp-content/uploads/Logo_sep_23.png
 url: https://raw.githubusercontent.com/api-evangelist/vestaron/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
 specificationVersion: '0.20'
 created: '2026-08-05'
 modified: '2026-08-05'
 tags:
 - Company
-apis: []
+- Agriculture
+- AgTech
+- Biotechnology
+- Crop Protection
+- Bioinsecticides
+- Peptides
+- Biologicals
+- Sustainability
+- Pollinator Safety
+- Life Sciences
+- Content
+apis:
+- aid: vestaron:content
+  name: Vestaron Content API (WordPress REST wp/v2)
+  description: >-
+    The anonymously readable WordPress REST API that vestaron.com serves at /wp-json/wp/v2 — the
+    corporate newsroom (94 published posts spanning 2015-06-12 to 2026-03-11 across the News,
+    Articles, Recognitions and Video/Podcasts categories), 34 product and company pages
+    (SPEAR RC, SPEAR T, LEPROTEC, LEPROTEC WG, the products overview, About Us, Science,
+    Sustainability, Bee Friendly, Resources, Downloads, Contact and the per-jurisdiction legal
+    pages), an 829-item media library, the category and year-tag taxonomies and a site-wide
+    search endpoint indexing 128 objects — all as JSON with page/per_page pagination and
+    X-WP-Total / X-WP-TotalPages / RFC 8288 Link headers. /wp/v2/users and /wp/v2/settings
+    return 401 to anonymous callers and every write requires authentication. This is the CMS
+    content API, not a crop-protection product API; Vestaron publishes no OpenAPI for it, so the
+    definition in this repo was derived mechanically from the live route-discovery document at
+    https://vestaron.com/wp-json/.
+  humanURL: https://vestaron.com/news/
+  baseURL: https://vestaron.com/wp-json/wp/v2
+  tags:
+  - Content
+  - News
+  - Media
+  - Search
+  - Taxonomy
+  properties:
+  - type: OpenAPI
+    url: openapi/vestaron-content-openapi.yml
+  - type: Overlay
+    url: overlays/vestaron-content-overlay.yaml
+  - type: DataModel
+    url: data-model/vestaron-data-model.yml
+  - type: ErrorCatalog
+    url: errors/vestaron-problem-types.yml
+  - type: Examples
+    url: examples/vestaron-examples.yml
+  - type: Conventions
+    url: conventions/vestaron-conventions.yml
+  - type: Authentication
+    url: authentication/vestaron-authentication.yml
+  x-evidence:
+    route_index: https://vestaron.com/wp-json/
+    http_status: 200
+    fetched: '2026-08-05'
+    spec_note: >-
+      Derived by API Evangelist from the site's own route-discovery document — 37 paths, 89
+      operations. Vestaron publishes no OpenAPI of its own.
+- aid: vestaron:mcp
+  name: Vestaron MCP Server (WordPress MCP Adapter)
+  description: >-
+    A remote Model Context Protocol server published on the vestaron.com host and advertised
+    anonymously through RFC 8414 OAuth authorization-server metadata and RFC 9728
+    protected-resource metadata. The server fronts the vestaron.com WordPress content estate —
+    the marketing site, newsroom and media library — not any crop-protection product system.
+    Authorization is OAuth 2.1 authorization-code with mandatory PKCE (S256), a single `mcp`
+    scope, public clients (token_endpoint_auth_methods none), refresh tokens and client-ID
+    metadata documents. tools/list is authenticated: an anonymous JSON-RPC call returns HTTP 401
+    mcp_unauthorized, and the backing wp-abilities/v1 registry returns 401 rest_forbidden, so
+    the live tool schemas require an authorized session and no tool list is asserted here.
+  humanURL: https://vestaron.com/wp-json/mcp
+  baseURL: https://vestaron.com/wp-json/mcp/mcp-oauth-server
+  tags:
+  - MCP
+  - Agents
+  - Content
+  properties:
+  - type: MCPServer
+    url: mcp/vestaron-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/vestaron-tool-crosswalk.yml
+  - type: OAuthScopes
+    url: scopes/vestaron-scopes.yml
+  - type: Authentication
+    url: authentication/vestaron-authentication.yml
+  x-evidence:
+    protected_resource: https://vestaron.com/.well-known/oauth-protected-resource
+    authorization_server: https://vestaron.com/.well-known/oauth-authorization-server
+    http_status: 200
+    tools_list_status: 401
+    fetched: '2026-08-05'
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +124,100 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
+  url: https://vestaron.com/
+- type: About
+  url: https://vestaron.com/about-us/
+- type: Products
+  url: https://vestaron.com/overview/
+- type: Technology
+  url: https://vestaron.com/science/
+- type: News
+  url: https://vestaron.com/news/
+- type: BlogRSS
+  url: https://vestaron.com/feed/
+- type: Resources
+  url: https://vestaron.com/resources/
+- type: Downloads
+  url: https://vestaron.com/downloads/
+- type: Sustainability
+  url: https://vestaron.com/socialresponsibility/
+- type: Support
+  url: https://vestaron.com/contact/
+- type: Contact
+  url: https://vestaron.com/contact/
+- type: TermsOfService
+  url: https://vestaron.com/legal/terms-conditions/
+- type: PrivacyPolicy
+  url: https://vestaron.com/legal/privacy-statement/
+- type: Legal
+  url: https://vestaron.com/legal/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/vestaron-corporation
+- type: YouTube
+  url: https://www.youtube.com/@vestaroncropprotection
+- type: SecondaryMarket
   url: https://forgeglobal.com/vestaron_stock/
+- type: OpenAPI
+  url: openapi/vestaron-content-openapi.yml
+- type: Overlay
+  url: overlays/vestaron-content-overlay.yaml
+- type: MCPServer
+  url: mcp/vestaron-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/vestaron-tool-crosswalk.yml
+- type: Authentication
+  url: authentication/vestaron-authentication.yml
+- type: OAuthScopes
+  url: scopes/vestaron-scopes.yml
+- type: WellKnown
+  url: well-known/vestaron-well-known.yml
+- type: Conventions
+  url: conventions/vestaron-conventions.yml
+- type: Conformance
+  url: conformance/vestaron-conformance.yml
+- type: ErrorCatalog
+  url: errors/vestaron-problem-types.yml
+- type: Examples
+  url: examples/vestaron-examples.yml
+- type: DataModel
+  url: data-model/vestaron-data-model.yml
+- type: Lifecycle
+  url: lifecycle/vestaron-lifecycle.yml
+- type: DomainSecurity
+  url: security/vestaron-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/vestaron-agentic-access.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/vestaron-llms.txt
+x-enrichment:
+  date: '2026-08-05'
+  status: enriched
+  artifacts_added: 21
+  pass: local-v1
+x-coverage:
+  state: covered
+  reason: null
+  detail: >-
+    Contract discovery succeeded on a company that ships no software. vestaron.com is WordPress
+    behind a catch-all front controller that answers HTTP 200 with a 122,173-byte HTML shell for
+    every unmatched path — so every /.well-known/ and /openapi.json probe was diffed against a
+    control 404 before being believed. Two real machine-readable surfaces survived that diff: the
+    anonymously readable WordPress REST content API at /wp-json/wp/v2 (37 paths, 89 operations
+    derived from the site's own route index) and an OAuth-gated MCP endpoint at
+    /wp-json/mcp/mcp-oauth-server advertised through RFC 8414 and RFC 9728 metadata. Vestaron
+    publishes no OpenAPI, no A2A agent card, no security.txt, no SDKs and no developer program;
+    those absences are recorded as absences, not as 200s.
+  evidence:
+  - url: https://vestaron.com/wp-json/
+    status: 200
+  - url: https://vestaron.com/.well-known/oauth-protected-resource
+    status: 200
+  - url: https://vestaron.com/wp-json/mcp/mcp-oauth-server
+    status: 401
+  - url: https://vestaron.com/.well-known/agent-card.json
+    status: 200
+  - url: https://vestaron.com/zzz-nonexistent-path-9182
+    status: 200
+  checked: '2026-08-05'

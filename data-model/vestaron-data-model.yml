@@ -1,0 +1,128 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/vestaron-content-openapi.yml + live objects read from https://vestaron.com/wp-json/wp/v2
+note: >-
+  The entity graph of the vestaron.com WordPress content API, derived from the route index and
+  from the shape of live objects returned anonymously. Vestaron publishes no object reference.
+identifiers:
+  scheme: integer
+  detail: >-
+    Every entity is keyed by a site-scoped auto-increment integer id. There are no prefixed ids.
+    Objects also carry a `slug` (URL-safe, unique per collection) and a `link` (canonical public
+    URL).
+entities:
+- name: post
+  collection: /wp/v2/posts
+  count_observed: 94
+  operations: [getPosts, getPostsById]
+  description: >-
+    The Vestaron newsroom item — press releases, trade articles, award recognitions and
+    video/podcast entries. Observed range 2015-06-12 to 2026-03-11.
+  key_fields: [id, date, modified, slug, status, link, title.rendered, content.rendered,
+    excerpt.rendered, author, featured_media, categories, tags]
+- name: page
+  collection: /wp/v2/pages
+  count_observed: 34
+  operations: [getPages, getPagesById]
+  description: >-
+    Product and company pages — SPEAR LEP / SPEAR RC / SPEAR T / BASIN FLEX / LEPROTEC /
+    LEPROTEC WG product pages, About Us, Science, Sustainability, Bee Friendly, Resources,
+    Downloads, Contact, and the per-jurisdiction legal pages (US, EU, UK, CA, Australia, Brazil,
+    South Africa).
+  key_fields: [id, date, modified, slug, status, link, title.rendered, content.rendered, parent,
+    menu_order, featured_media]
+- name: attachment
+  collection: /wp/v2/media
+  count_observed: 829
+  operations: [getMedia, getMediaById]
+  description: >-
+    The media library — product and brand imagery, logos, award marks and downloadable
+    documents referenced from the product and Resources pages.
+  key_fields: [id, date, slug, link, title.rendered, media_type, mime_type, source_url,
+    media_details, post, alt_text]
+- name: category
+  collection: /wp/v2/categories
+  count_observed: 4
+  operations: [getCategories, getCategoriesById]
+  description: 'Editorial categories: News (64), Articles (16), Recognitions (13),
+    Video/Podcasts (5).'
+  key_fields: [id, name, slug, count, parent, taxonomy, link]
+- name: tag
+  collection: /wp/v2/tags
+  count_observed: 9
+  operations: [getTags, getTagsById]
+  description: 'Year tags used to date newsroom items: 2015, 2018, 2019, 2020, 2021, 2022,
+    2023, 2024, 2025.'
+  key_fields: [id, name, slug, count, taxonomy, link]
+- name: comment
+  collection: /wp/v2/comments
+  count_observed: 0
+  operations: [getComments, getCommentsById]
+  description: Commenting is closed site-wide; the collection is readable and empty.
+  key_fields: [id, post, parent, author_name, date, content.rendered, status]
+- name: user
+  collection: /wp/v2/users
+  count_observed: null
+  operations: [getUsers, getUsersById, getUsersMe]
+  description: >-
+    Authors. Not anonymously readable on this host — GET /wp/v2/users returns 401
+    rest_user_cannot_view.
+  access: gated
+- name: search_result
+  collection: /wp/v2/search
+  count_observed: 128
+  operations: [getSearch]
+  description: >-
+    Site-wide search projection across posts and pages; returns id, title, url, type and
+    subtype only.
+  key_fields: [id, title, url, type, subtype]
+relationships:
+- from: post
+  to: user
+  kind: belongs_to
+  via: author
+  note: author id is present on the object, but the user resource itself is 401 to anonymous callers
+- from: post
+  to: attachment
+  kind: has_one
+  via: featured_media
+- from: post
+  to: category
+  kind: has_many
+  via: categories
+- from: post
+  to: tag
+  kind: has_many
+  via: tags
+- from: post
+  to: comment
+  kind: has_many
+  via: comment.post
+- from: page
+  to: page
+  kind: belongs_to
+  via: parent
+  note: the /legal/ pages nest under the zLegal parent page
+- from: page
+  to: attachment
+  kind: has_one
+  via: featured_media
+- from: attachment
+  to: post
+  kind: belongs_to
+  via: post
+- from: category
+  to: category
+  kind: belongs_to
+  via: parent
+- from: search_result
+  to: post
+  kind: has_one
+  via: id + subtype
+traversal:
+  embedding: >-
+    Add _embed=true to any collection or item request to inline author, featured media and terms
+    into an _embedded object, resolving the relationships above in a single call.
+  links: >-
+    Every object carries a _links object (self, collection, about, author, replies,
+    wp:featuredmedia, wp:term) giving the machine-navigable form of the same graph.

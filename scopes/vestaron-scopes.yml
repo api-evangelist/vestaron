@@ -1,0 +1,41 @@
+generated: '2026-08-05'
+method: probed
+source: https://vestaron.com/.well-known/oauth-authorization-server
+note: >-
+  Derived from the anonymous RFC 8414 authorization-server metadata and the RFC 9728
+  protected-resource metadata that vestaron.com serves for its WordPress MCP endpoint. Vestaron
+  publishes no scope reference page; the single scope below is the complete set the server
+  advertises. Nothing beyond the advertised value is asserted.
+schemes:
+- name: mcp-oauth
+  type: oauth2
+  source: well-known/vestaron-oauth-authorization-server.json
+  issuer: https://vestaron.com
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://vestaron.com/oauth/authorize
+    tokenUrl: https://vestaron.com/oauth/token
+    revocationUrl: https://vestaron.com/oauth/revoke
+    pkce: required
+    code_challenge_methods: [S256]
+    refresh_token: true
+    client_authentication: none
+scopes:
+- scope: mcp
+  description: >-
+    The only scope advertised by the authorization server and by the protected-resource metadata
+    for https://vestaron.com/wp-json/mcp/mcp-oauth-server. Vestaron publishes no further
+    description; the scope's effective permissions could not be determined because tools/list is
+    401 to anonymous callers.
+  flows: [authorizationCode]
+  resources: [https://vestaron.com/wp-json/mcp/mcp-oauth-server]
+  sources:
+  - well-known/vestaron-oauth-authorization-server.json
+  - well-known/vestaron-oauth-protected-resource.json
+x-evidence:
+  fetched: '2026-08-05'
+  urls:
+  - url: https://vestaron.com/.well-known/oauth-authorization-server
+    http_status: 200
+  - url: https://vestaron.com/.well-known/oauth-protected-resource
+    http_status: 200
