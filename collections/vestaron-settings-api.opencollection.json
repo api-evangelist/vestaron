@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vestaron Content API (WordPress REST wp/v2) Settings API",
+    "version": "wp/v2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Settings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "GET /wp/v2/settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://vestaron.com/wp-json/wp/v2/settings"
+          },
+          "docs": "GET /wp/v2/settings"
+        },
+        {
+          "info": {
+            "name": "POST /wp/v2/settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://vestaron.com/wp-json/wp/v2/settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "POST /wp/v2/settings"
+        },
+        {
+          "info": {
+            "name": "PUT /wp/v2/settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://vestaron.com/wp-json/wp/v2/settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "PUT /wp/v2/settings"
+        },
+        {
+          "info": {
+            "name": "PATCH /wp/v2/settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://vestaron.com/wp-json/wp/v2/settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "PATCH /wp/v2/settings"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

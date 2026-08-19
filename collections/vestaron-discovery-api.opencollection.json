@@ -1,0 +1,129 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vestaron Content API (WordPress REST wp/v2) Discovery API",
+    "version": "wp/v2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Discovery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "GET /wp/v2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://vestaron.com/wp-json/wp/v2",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "context",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "GET /wp/v2"
+        },
+        {
+          "info": {
+            "name": "GET /wp/v2/statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://vestaron.com/wp-json/wp/v2/statuses",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in response."
+              }
+            ]
+          },
+          "docs": "GET /wp/v2/statuses"
+        },
+        {
+          "info": {
+            "name": "GET /wp/v2/statuses/{status}",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://vestaron.com/wp-json/wp/v2/statuses/:status",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier from the route pattern /wp/v2/statuses/(?P<status>[\\w-]+)."
+              },
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in response."
+              }
+            ]
+          },
+          "docs": "GET /wp/v2/statuses/{status}"
+        },
+        {
+          "info": {
+            "name": "GET /wp/v2/types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://vestaron.com/wp-json/wp/v2/types",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in response."
+              }
+            ]
+          },
+          "docs": "GET /wp/v2/types"
+        },
+        {
+          "info": {
+            "name": "GET /wp/v2/types/{type}",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://vestaron.com/wp-json/wp/v2/types/:type",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier from the route pattern /wp/v2/types/(?P<type>[\\w-]+)."
+              },
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in response."
+              }
+            ]
+          },
+          "docs": "GET /wp/v2/types/{type}"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
