@@ -237,6 +237,8 @@ apis:
   humanURL: https://vestaron.com/news/
   baseURL: https://vestaron.com/wp-json/wp/v2
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
