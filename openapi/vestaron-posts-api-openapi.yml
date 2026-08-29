@@ -1214,26 +1214,26 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Unauthorized:
-      description: Authentication required or insufficient capability (rest_forbidden). Observed on /wp/v2/users and /wp/v2/settings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WpError'
-    Forbidden:
-      description: Capability denied (rest_cannot_*).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WpError'
     BadRequest:
       description: Invalid parameter (rest_invalid_param).
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/WpError'
+    Unauthorized:
+      description: Authentication required or insufficient capability (rest_forbidden). Observed on /wp/v2/users and /wp/v2/settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WpError'
     NotFound:
       description: No route or resource matched (rest_no_route, rest_post_invalid_id).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WpError'
+    Forbidden:
+      description: Capability denied (rest_cannot_*).
       content:
         application/json:
           schema:
