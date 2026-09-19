@@ -319,8 +319,6 @@ common:
   url: https://www.youtube.com/@vestaroncropprotection
 - type: SecondaryMarket
   url: https://forgeglobal.com/vestaron_stock/
-- type: OpenAPI
-  url: openapi/_original/vestaron-content-openapi.yml
 - type: Overlay
   url: overlays/vestaron-content-overlay.yaml
 - type: MCPServer
