@@ -1,15 +1,7 @@
 {
   "provider": "vestaron",
   "sources": [
-    "vestaron-comments-api-openapi.yml",
-    "vestaron-discovery-api-openapi.yml",
-    "vestaron-media-api-openapi.yml",
-    "vestaron-pages-api-openapi.yml",
-    "vestaron-posts-api-openapi.yml",
-    "vestaron-search-api-openapi.yml",
-    "vestaron-settings-api-openapi.yml",
-    "vestaron-taxonomy-api-openapi.yml",
-    "vestaron-users-api-openapi.yml"
+    "_ae-authored/vestaron-content-openapi.yml"
   ],
   "outputs": [
     "vestaron-comments-api-openapi.yml",
@@ -26,7 +18,19 @@
   "errors": [],
   "warnings": [],
   "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "vestaron-content-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "vestaron-comments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "vestaron-discovery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "vestaron-media-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "vestaron-pages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "vestaron-posts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "vestaron-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "vestaron-settings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "vestaron-taxonomy-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "vestaron-users-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
