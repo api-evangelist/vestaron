@@ -63,7 +63,6 @@ tags:
 - Sustainability
 - Pollinator Safety
 - Life Sciences
-- Content
 apis:
 - aid: vestaron:mcp
   name: Vestaron MCP Server (WordPress MCP Adapter)
@@ -97,188 +96,23 @@ apis:
     http_status: 200
     tools_list_status: 401
     fetched: '2026-08-05'
-- aid: vestaron:vestaron-comments-api
-  name: Vestaron Comments API
-  description: The Comments API from Vestaron — 2 operation(s) for comments.
-  humanURL: https://vestaron.com/news/
-  baseURL: https://vestaron.com/wp-json/wp/v2
+  x-surface: platform-generated
+  x-platform: wordpress
+  x-platform-surface: mcp-plugin
+- aid: vestaron:vestaron-com-website-wordpress-rest
+  name: Vestaron Website (WordPress REST)
+  description: 'The public WordPress REST API (wp-json) of the Vestaron website at vestaron.com: the route
+    index of the site''s content management system, catalogued as one site surface rather than as separate
+    APIs.'
+  baseURL: https://vestaron.com/wp-json
   tags:
-  - Comments
+  - WordPress
+  x-surface: platform-generated
   properties:
-  - type: OpenAPI
-    url: openapi/vestaron-comments-api-openapi.yml
-  - type: DataModel
-    url: data-model/vestaron-data-model.yml
-  - type: ErrorCatalog
-    url: errors/vestaron-problem-types.yml
-  - type: Examples
-    url: examples/vestaron-examples.yml
-  - type: Conventions
-    url: conventions/vestaron-conventions.yml
-  - type: Authentication
-    url: authentication/vestaron-authentication.yml
-- aid: vestaron:vestaron-discovery-api
-  name: Vestaron Discovery API
-  description: The Discovery API from Vestaron — 5 operation(s) for discovery.
-  humanURL: https://vestaron.com/news/
-  baseURL: https://vestaron.com/wp-json/wp/v2
-  tags:
-  - Discovery
-  properties:
-  - type: OpenAPI
-    url: openapi/vestaron-discovery-api-openapi.yml
-  - type: DataModel
-    url: data-model/vestaron-data-model.yml
-  - type: ErrorCatalog
-    url: errors/vestaron-problem-types.yml
-  - type: Examples
-    url: examples/vestaron-examples.yml
-  - type: Conventions
-    url: conventions/vestaron-conventions.yml
-  - type: Authentication
-    url: authentication/vestaron-authentication.yml
-- aid: vestaron:vestaron-media-api
-  name: Vestaron Media API
-  description: The Media API from Vestaron — 4 operation(s) for media.
-  humanURL: https://vestaron.com/news/
-  baseURL: https://vestaron.com/wp-json/wp/v2
-  tags:
-  - Media
-  properties:
-  - type: OpenAPI
-    url: openapi/vestaron-media-api-openapi.yml
-  - type: DataModel
-    url: data-model/vestaron-data-model.yml
-  - type: ErrorCatalog
-    url: errors/vestaron-problem-types.yml
-  - type: Examples
-    url: examples/vestaron-examples.yml
-  - type: Conventions
-    url: conventions/vestaron-conventions.yml
-  - type: Authentication
-    url: authentication/vestaron-authentication.yml
-- aid: vestaron:vestaron-pages-api
-  name: Vestaron Pages API
-  description: The Pages API from Vestaron — 6 operation(s) for pages.
-  humanURL: https://vestaron.com/news/
-  baseURL: https://vestaron.com/wp-json/wp/v2
-  tags:
-  - Pages
-  properties:
-  - type: OpenAPI
-    url: openapi/vestaron-pages-api-openapi.yml
-  - type: DataModel
-    url: data-model/vestaron-data-model.yml
-  - type: ErrorCatalog
-    url: errors/vestaron-problem-types.yml
-  - type: Examples
-    url: examples/vestaron-examples.yml
-  - type: Conventions
-    url: conventions/vestaron-conventions.yml
-  - type: Authentication
-    url: authentication/vestaron-authentication.yml
-- aid: vestaron:vestaron-posts-api
-  name: Vestaron Posts API
-  description: The Posts API from Vestaron — 6 operation(s) for posts.
-  humanURL: https://vestaron.com/news/
-  baseURL: https://vestaron.com/wp-json/wp/v2
-  tags:
-  - Posts
-  properties:
-  - type: OpenAPI
-    url: openapi/vestaron-posts-api-openapi.yml
-  - type: DataModel
-    url: data-model/vestaron-data-model.yml
-  - type: ErrorCatalog
-    url: errors/vestaron-problem-types.yml
-  - type: Examples
-    url: examples/vestaron-examples.yml
-  - type: Conventions
-    url: conventions/vestaron-conventions.yml
-  - type: Authentication
-    url: authentication/vestaron-authentication.yml
-- aid: vestaron:vestaron-search-api
-  name: Vestaron Search API
-  description: The Search API from Vestaron — 1 operation(s) for search.
-  humanURL: https://vestaron.com/news/
-  baseURL: https://vestaron.com/wp-json/wp/v2
-  tags:
-  - Search
-  properties:
-  - type: OpenAPI
-    url: openapi/vestaron-search-api-openapi.yml
-  - type: DataModel
-    url: data-model/vestaron-data-model.yml
-  - type: ErrorCatalog
-    url: errors/vestaron-problem-types.yml
-  - type: Examples
-    url: examples/vestaron-examples.yml
-  - type: Conventions
-    url: conventions/vestaron-conventions.yml
-  - type: Authentication
-    url: authentication/vestaron-authentication.yml
-- aid: vestaron:vestaron-settings-api
-  name: Vestaron Settings API
-  description: The Settings API from Vestaron — 1 operation(s) for settings.
-  humanURL: https://vestaron.com/news/
-  baseURL: https://vestaron.com/wp-json/wp/v2
-  tags:
-  - Settings
-  properties:
-  - type: OpenAPI
-    url: openapi/vestaron-settings-api-openapi.yml
-  - type: DataModel
-    url: data-model/vestaron-data-model.yml
-  - type: ErrorCatalog
-    url: errors/vestaron-problem-types.yml
-  - type: Examples
-    url: examples/vestaron-examples.yml
-  - type: Conventions
-    url: conventions/vestaron-conventions.yml
-  - type: Authentication
-    url: authentication/vestaron-authentication.yml
-- aid: vestaron:vestaron-taxonomy-api
-  name: Vestaron Taxonomy API
-  description: The Taxonomy API from Vestaron — 6 operation(s) for taxonomy.
-  humanURL: https://vestaron.com/news/
-  baseURL: https://vestaron.com/wp-json/wp/v2
-  tags:
-  - Taxonomy
-  properties:
-  - type: OpenAPI
-    url: openapi/vestaron-taxonomy-api-openapi.yml
-  - type: DataModel
-    url: data-model/vestaron-data-model.yml
-  - type: ErrorCatalog
-    url: errors/vestaron-problem-types.yml
-  - type: Examples
-    url: examples/vestaron-examples.yml
-  - type: Conventions
-    url: conventions/vestaron-conventions.yml
-  - type: Authentication
-    url: authentication/vestaron-authentication.yml
-- aid: vestaron:vestaron-users-api
-  name: Vestaron Users API
-  description: The Users API from Vestaron — 6 operation(s) for users.
-  humanURL: https://vestaron.com/news/
-  baseURL: https://vestaron.com/wp-json/wp/v2
-  tags:
-  - User
-  tags_raw:
-  - Users
-  properties:
-  - type: OpenAPI
-    url: openapi/vestaron-users-api-openapi.yml
-  - type: DataModel
-    url: data-model/vestaron-data-model.yml
-  - type: ErrorCatalog
-    url: errors/vestaron-problem-types.yml
-  - type: Examples
-    url: examples/vestaron-examples.yml
-  - type: Conventions
-    url: conventions/vestaron-conventions.yml
-  - type: Authentication
-    url: authentication/vestaron-authentication.yml
+  - type: Documentation
+    url: https://vestaron.com/wp-json
+  x-platform: wordpress
+  x-platform-surface: rest
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
